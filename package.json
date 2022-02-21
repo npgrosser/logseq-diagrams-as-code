@@ -1,0 +1,31 @@
+{
+  "logseq": {
+    "id": "logseq-diagrams-as-code",
+    "title": "Diagrams as Code",
+    "icon": "./icon.svg"
+  },
+  "name": "logseq-diagrams-as-code",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.html",
+  "targets": {
+    "main": false
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "parcel build --no-source-maps src/index.html --public-url ./",
+    "dev": "parcel watch src/index.html --public-url ./"
+  },
+  "keywords": [],
+  "author": "npgrosser",
+  "license": "MIT",
+  "dependencies": {
+    "@logseq/libs": "^0.0.1-alpha.35",
+    "async-mutex": "^0.3.2",
+    "pako": "^2.0.4"
+  },
+  "devDependencies": {
+    "@types/pako": "^1.0.3",
+    "parcel": "^2.2.0"
+  }
+}
