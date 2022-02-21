@@ -65,6 +65,10 @@ abstract class ImgSrcRenderer extends Renderer {
 }
 
 
+function svgToImg(svg: string, alt: string): string {
+    return `<img alt="${alt}" src="data:image/svg+xml;base64,${btoa(svg)}">`
+}
+
 class KrokiRenderer extends ImgSrcRenderer {
     readonly type: string;
     readonly fmt: string
@@ -79,9 +83,8 @@ class KrokiRenderer extends ImgSrcRenderer {
         if (this.fmt === "svg") {
             const response = await fetch(await this.createImgSrc(code));
             const text = await response.text()
-
             if (response.status === 200) {
-                `<img alt="A Diagram" src='data:image/svg+xml;base64,${btoa(text)}>`
+                return svgToImg(text, `A ${this.type} Diagram`);
             } else {
                 let lines = text.split("\n");
                 // some error messages are a bit to verbose... therefore limiting the number of lines to 5
