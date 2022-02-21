@@ -66,7 +66,7 @@ abstract class ImgSrcRenderer extends Renderer {
 
 
 function svgToImg(svg: string, alt: string): string {
-    return `<img alt="${alt}" src="data:image/svg+xml;base64,${btoa(svg)}">`
+    return `<img style="box-shadow: none" alt="${alt}" src="data:image/svg+xml;base64,${btoa(svg)}">`
 }
 
 class KrokiRenderer extends ImgSrcRenderer {
