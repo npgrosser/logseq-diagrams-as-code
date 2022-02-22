@@ -8,13 +8,3 @@ export function dedent(str: string) {
 export function urlSafeBase64(str: string) {
     return btoa(str).replace(/\+/g, "-").replace(/\//g, "_")
 }
-
-export function htmlEscape(text: string) {
-    return text
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll("'", "&#039;")
-        .replaceAll("\"", "&quot;")
-        .replaceAll(" ", "&nbsp;");
-}

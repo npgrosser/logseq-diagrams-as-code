@@ -4,7 +4,9 @@ Plugin that lets you create diagrams from textural representation (aka 'Diagrams
 
 ![Demo](demo.gif)
 
-## Diagram types
+## Features
+
+### Diagrams
 
 - [PlantUML](https://plantuml.com/)
 - [Graphviz](https://graphviz.org/)
@@ -16,6 +18,14 @@ Plugin that lets you create diagrams from textural representation (aka 'Diagrams
 - [ActDiag](http://blockdiag.com/en/actdiag/index.html)
 - [NwDiag](http://blockdiag.com/en/nwdiag/index.html)
 - [WaveDrom](https://wavedrom.com/)
+
+### Math
+
+Additionally, the plugin supports [AsciiMath](http://asciimath.org/) and [TeX](https://en.wikipedia.org/wiki/TeX) to
+display mathematical formulas.
+
+Note that Logseq already supports [TeX-style](https://katex.org/) inline math (type *$$* to try it out).    
+Another option is [darwis-mathlive-plugin](https://github.com/hkgnp/).
 
 ## Rendering
 

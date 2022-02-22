@@ -1,8 +1,8 @@
 import {ImgSrcRenderer} from "./ImgSrcRenderer";
 import pako from "pako";
 import {Config} from "../../config";
-import {SvgRenderer} from "./SvgRenderer";
-import {htmlEscape, urlSafeBase64} from "../string-utils";
+import {urlSafeBase64} from "../string-utils";
+import {createErrorSpan, svgToImg} from "./html-utils";
 
 export class KrokiRenderer extends ImgSrcRenderer {
     readonly type: string;
@@ -19,7 +19,7 @@ export class KrokiRenderer extends ImgSrcRenderer {
             const response = await fetch(await this.createImgSrc(code));
             const text = await response.text()
             if (response.status === 200) {
-                return SvgRenderer.svgToImg(text, `A ${this.type} Diagram`);
+                return svgToImg(text, `A ${this.type} Diagram`);
             } else {
                 let lines = text.split("\n");
                 // some error messages are a bit to verbose... therefore limiting the number of lines to 5
@@ -28,7 +28,7 @@ export class KrokiRenderer extends ImgSrcRenderer {
                     lines = lines.slice(0, maxLines);
                     lines.push("...");
                 }
-                return `<span style="white-space: pre-line;" class="error">${htmlEscape(lines.join("\n"))}</span>`
+                return createErrorSpan(lines.join("\n"));
             }
         } else {
             return super.render(code);
