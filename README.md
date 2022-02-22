@@ -25,7 +25,7 @@ Additionally, the plugin supports [AsciiMath](http://asciimath.org/) and [TeX](h
 display mathematical formulas.
 
 Note that Logseq already supports [TeX-style](https://katex.org/) inline math (type *$$* to try it out).    
-Another option is [darwis-mathlive-plugin](https://github.com/hkgnp/).
+Another option is [darwis-mathlive-plugin](https://github.com/hkgnp/darwis-mathlive-plugin).
 
 ## Rendering
 
