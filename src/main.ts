@@ -47,7 +47,7 @@ async function updateDiagram(slot: string, rendererBlockIdentity: BlockUUID, ren
     <div 
         class="${CONTAINER_CSS_CLASS} ${CONTAINER_CSS_CLASS}-${renderer.type}"
         id="${id}" 
-        style="white-space: normal;" 
+        style="white-space: normal; min-width: 20px; min-height: 20px;" 
         data-on-click="handleDiagramClick">
         <span style="all: unset">${diagramHtml}</span>
     </div>`;
