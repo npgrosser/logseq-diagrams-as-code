@@ -15,6 +15,9 @@ export class KrokiRenderer extends ImgSrcRenderer {
     }
 
     async render(code: string): Promise<string> {
+        if (code.trim().length == 0) {
+            return ""
+        }
         if (this.fmt === "svg") {
             const response = await fetch(await this.createImgSrc(code));
             const text = await response.text()
@@ -31,7 +34,7 @@ export class KrokiRenderer extends ImgSrcRenderer {
                 return createErrorSpan(lines.join("\n"));
             }
         } else {
-            return super.render(code);
+            return await super.render(code);
         }
     }
 
