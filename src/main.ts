@@ -4,7 +4,7 @@ import {BlockUUID} from "@logseq/libs/dist/LSPlugin";
 import {Config} from "./config";
 import {findCode, isRendererBlock} from "./lib/logseq-utils";
 import renderers from "./renderers";
-import templates, {InMemoryTemplate, Template} from "./templates";
+import templates, {InMemoryTemplate} from "./templates";
 
 const RENDERER_NAME = "code_diagram"
 const CONTAINER_CSS_CLASS = "dac-diagram-container"
@@ -22,7 +22,7 @@ function main() {
 
         for (let loader of loaders) {
             logseq.Editor.registerSlashCommand(`Create ${loader.templateName}`,
-                () => createDiagramAsCodeBlock(renderer, loader));
+                async () => createDiagramAsCodeBlock(renderer.type, await loader.load()));
 
             logseq.App.onMacroRendererSlotted(async ({slot, payload}) => {
                 let [rendererName, type] = payload.arguments;
@@ -87,13 +87,13 @@ async function handleDiagramClick() {
 /**
  * insert renderer and empty code-block
  */
-async function createDiagramAsCodeBlock({type}: Renderer, templateLoader: Template) {
+async function createDiagramAsCodeBlock(type: string, template: string) {
     const parentBlockContent = `{{renderer ${RENDERER_NAME},${type}}}`;
 
     await logseq.Editor.insertAtEditingCursor(parentBlockContent);
     const parentBlock = await logseq.Editor.getCurrentBlock();
 
-    const codeBlockContent = `\`\`\`${type}\n${await templateLoader.load()}\n\`\`\``;
+    const codeBlockContent = `\`\`\`${type}\n${template}\n\`\`\``;
 
     if (Config.inlineCodeBlock) {
         await logseq.Editor.insertAtEditingCursor("\n" + codeBlockContent);
