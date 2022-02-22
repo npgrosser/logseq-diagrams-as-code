@@ -18,7 +18,7 @@ export function scaleSvgElement(svgElement: SVGSVGElement, scale: number) {
 }
 
 export function svgToImg(svg: string, alt: string): string {
-    return `<img style="box-shadow: none" alt="${alt}" src="data:image/svg+xml;base64,${btoa(svg)}">`
+    return `<img style="box-shadow: none" alt="${alt}" src="data:image/svg+xml;utf8,${svg}">`
 }
 
 export function createErrorSpan(text: string): string {
