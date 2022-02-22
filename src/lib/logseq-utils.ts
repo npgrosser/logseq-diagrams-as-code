@@ -1,7 +1,5 @@
 import {BlockEntity, BlockIdentity, BlockUUID} from "@logseq/libs/dist/LSPlugin";
 
-// region logseq specific
-
 function getFirstCodeBlockContent(content: string): string | null {
     const lines = content.trim().split("\n");
 
@@ -50,28 +48,4 @@ export function isRendererBlock(blockEntity: BlockEntity | null | undefined): bo
     }
     const content = blockEntity.content;
     return content != null && content.trim().startsWith("{{renderer ");
-}
-
-// endregion
-
-export function dedent(str: string) {
-    // thanks https://codepen.io/gskinner/pen/BVEzox
-    str = str.replace(/^\n/, "");
-    let match = str.match(/^\s+/);
-    return match ? str.replace(new RegExp("^" + match[0], "gm"), "") : str;
-}
-
-
-export function urlSafeBase64(str: string) {
-    return btoa(str).replace(/\+/g, "-").replace(/\//g, "_")
-}
-
-export function htmlEscape(text: string) {
-    return text
-        .replaceAll("&", "&amp;")
-        .replaceAll("<", "&lt;")
-        .replaceAll(">", "&gt;")
-        .replaceAll("'", "&#039;")
-        .replaceAll("\"", "&quot;")
-        .replaceAll(" ", "&nbsp;");
 }

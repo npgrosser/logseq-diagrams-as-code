@@ -1,9 +1,10 @@
 import '@logseq/libs';
-import {Renderer, renderers} from "./Renderer";
-import {findCode, isRendererBlock} from "./utils";
-import {BlockIdentity} from "@logseq/libs/dist/LSPlugin";
-import {getTemplateLoadersForType, InMemoryTemplateLoader, TemplateLoader} from "./TemplateLoader";
-import {Config} from "./Config";
+import {Renderer} from "./lib/rendering/Renderer";
+import {BlockUUID} from "@logseq/libs/dist/LSPlugin";
+import {Config} from "./config";
+import {findCode, isRendererBlock} from "./lib/logseq-utils";
+import renderers from "./renderers";
+import templates, {InMemoryTemplate, Template} from "./templates";
 
 const RENDERER_NAME = "code_diagram"
 const CONTAINER_CSS_CLASS = "dac-diagram-container"
@@ -11,11 +12,11 @@ const CONTAINER_ID_PREFIX = "dac-diagram-container-"
 
 function main() {
     for (let renderer of renderers) {
-        let loaders = getTemplateLoadersForType(renderer.type);
+        let loaders = templates.filter(t => t.rendererType === renderer.type);
         if (loaders.length == 0) {
             // fallback loader with empty template
             loaders = [
-                new InMemoryTemplateLoader(renderer.type, `${renderer.type} Diagram (empty)`, "")
+                new InMemoryTemplate(renderer.type, `${renderer.type} (empty)`, "")
             ];
         }
 
@@ -37,21 +38,22 @@ function main() {
 logseq.ready(main).catch(console.error);
 
 
-async function updateDiagram(slot: string, rendererBlockIdentity: BlockIdentity, renderer: Renderer) {
+async function updateDiagram(slot: string, rendererBlockIdentity: BlockUUID, renderer: Renderer) {
     const code = await findCode(rendererBlockIdentity);
     const diagramHtml = await renderer.render(code);
 
+    const id = `${CONTAINER_ID_PREFIX}${rendererBlockIdentity}`;
     const template = `
     <div 
         class="${CONTAINER_CSS_CLASS} ${CONTAINER_CSS_CLASS}-${renderer.type}"
-        id="${CONTAINER_ID_PREFIX}${rendererBlockIdentity}" 
+        id="${id}" 
         style="white-space: normal;" 
         data-on-click="handleDiagramClick">
         <span style="all: unset">${diagramHtml}</span>
     </div>`;
 
     logseq.provideUI({
-        // key: payload.uuid,
+        key: id,
         slot,
         reset: true,
         template
@@ -77,7 +79,7 @@ async function handleDiagramClick() {
         } else {
             // combined renderer and code block
             // todo
-            // the trick does not work because it resets the code content
+            // the trick does not work because it would reset the code content
         }
     }
 }
@@ -85,12 +87,13 @@ async function handleDiagramClick() {
 /**
  * insert renderer and empty code-block
  */
-async function createDiagramAsCodeBlock({type}: Renderer, templateLoader: TemplateLoader) {
+async function createDiagramAsCodeBlock({type}: Renderer, templateLoader: Template) {
     const parentBlockContent = `{{renderer ${RENDERER_NAME},${type}}}`;
-    const codeBlockContent = `\`\`\`${type}\n${await templateLoader.load()}\n\`\`\``;
 
     await logseq.Editor.insertAtEditingCursor(parentBlockContent);
     const parentBlock = await logseq.Editor.getCurrentBlock();
+
+    const codeBlockContent = `\`\`\`${type}\n${await templateLoader.load()}\n\`\`\``;
 
     if (Config.inlineCodeBlock) {
         await logseq.Editor.insertAtEditingCursor("\n" + codeBlockContent);
@@ -101,4 +104,3 @@ async function createDiagramAsCodeBlock({type}: Renderer, templateLoader: Templa
         });
     }
 }
-
