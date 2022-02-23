@@ -1,6 +1,6 @@
 # Logseq - Diagrams as Code
 
-Plugin that lets you create diagrams from textural representation (aka 'Diagrams as Code') within Logseq
+Plugin that lets you create diagrams from textual representation (aka 'Diagrams as Code') within Logseq
 
 ![Demo](demo.gif)
 
