@@ -1,6 +1,6 @@
 # Logseq - Diagrams as Code
 
-Plugin that lets you create diagrams (and other visualization) from textual representation (aka 'Diagrams as Code')
+Plugin that lets you create diagrams (and other visualizations) from textual representation (aka 'Diagrams as Code')
 within Logseq
 
 ![Demo](demo.gif)
