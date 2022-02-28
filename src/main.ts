@@ -6,9 +6,38 @@ import {findCode, isRendererBlock} from "./lib/logseq-utils";
 import renderers from "./renderers";
 import templates, {InMemoryTemplate} from "./templates";
 
-const RENDERER_NAME = "code_diagram"
-const CONTAINER_CSS_CLASS = "dac-diagram-container"
-const CONTAINER_ID_PREFIX = "dac-diagram-container-"
+const RENDERER_NAME = "code_diagram";
+const CONTAINER_ID_PREFIX = "dac-container-";
+const CONTAINER_CSS_CLASS = "dac-container";
+const TITLE_CSS_CLASS = "dac-title";
+const CAPTION_CSS_CLASS = "dac-caption";
+const CONTENT_CSS_CLASS = "dac-content";
+
+interface DiagramOptions {
+    title?: string
+    titleStyle?: string
+    titleTag?: string
+    caption?: string
+    captionStyle?: string
+    captionTag?: string
+    containerStyle?: string;
+    contentStyle?: string
+
+    [key: string]: any
+}
+
+function processOptions(diagramOptions: DiagramOptions): Required<DiagramOptions> {
+    return {
+        title: diagramOptions.title || "",
+        titleTag: diagramOptions.titleTag || "h4",
+        titleStyle: diagramOptions.titleStyle || "",
+        caption: diagramOptions.caption || "",
+        captionTag: diagramOptions.captionTag || "h6",
+        captionStyle: diagramOptions.captionStyle || "",
+        contentStyle: diagramOptions.contentStyle || "",
+        containerStyle: diagramOptions.containerStyle || ""
+    }
+}
 
 function main() {
     for (let renderer of renderers) {
@@ -25,9 +54,18 @@ function main() {
                 async () => createDiagramAsCodeBlock(renderer.type, await loader.load()));
 
             logseq.App.onMacroRendererSlotted(async ({slot, payload}) => {
-                let [rendererName, type] = payload.arguments;
+                let [rendererName, type, optionsStr] = payload.arguments;
+                const options: DiagramOptions = {};
+                if (optionsStr) {
+                    for (let optionStr of optionsStr.split("&")) {
+                        const [key, value] = optionStr.split("=").map(s => s.trim())
+                        if (key) {
+                            options[key] = value
+                        }
+                    }
+                }
                 if (rendererName !== RENDERER_NAME || type !== renderer.type) return;
-                await updateDiagram(slot, payload.uuid, renderer);
+                await updateDiagram(slot, payload.uuid, renderer, options);
             });
         }
     }
@@ -37,19 +75,43 @@ function main() {
 
 logseq.ready(main).catch(console.error);
 
-
-async function updateDiagram(slot: string, rendererBlockIdentity: BlockUUID, renderer: Renderer) {
+async function updateDiagram(slot: string, rendererBlockIdentity: BlockUUID, renderer: Renderer, opts: DiagramOptions) {
     const code = await findCode(rendererBlockIdentity);
     const diagramHtml = await renderer.render(code);
 
     const id = `${CONTAINER_ID_PREFIX}${rendererBlockIdentity}`;
+
+    const {
+        caption,
+        captionStyle,
+        captionTag,
+        containerStyle,
+        contentStyle,
+        title,
+        titleStyle,
+        titleTag
+    } = processOptions(opts);
+
+    const titleElement = title ? `
+        <${titleTag} class="${TITLE_CSS_CLASS} ${TITLE_CSS_CLASS}-${renderer.type}" style="${titleStyle}">
+            ${title}
+        </${titleTag}>` : "";
+    const captionElement = caption ? `
+        <${captionTag} class="${CAPTION_CSS_CLASS} ${CAPTION_CSS_CLASS}-${renderer.type}" style="${captionStyle}">
+            ${caption}
+        </${captionTag}>` : "";
+
     const template = `
     <div 
         class="${CONTAINER_CSS_CLASS} ${CONTAINER_CSS_CLASS}-${renderer.type}"
         id="${id}" 
-        style="white-space: normal; min-width: 20px; min-height: 20px;" 
+        style="${containerStyle + ";white-space: normal; min-width: 20px; min-height: 20px; text-align: center"}"
         data-on-click="handleDiagramClick">
-        <span style="all: unset">${diagramHtml}</span>
+         ${titleElement}
+         <div class="${CONTENT_CSS_CLASS} ${CONTENT_CSS_CLASS}-${renderer.type}" style="${contentStyle}">
+            ${diagramHtml}
+         </div>
+         ${captionElement}
     </div>`;
 
     logseq.provideUI({
