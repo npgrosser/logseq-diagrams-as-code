@@ -5,7 +5,7 @@ export abstract class ImgSrcRenderer extends Renderer {
 
     async render(code: string): Promise<string> {
         if (code.trim().length === 0) {
-            return ""
+            return "";
         }
         const imgSrc = await this.createImgSrc(code);
 
@@ -14,15 +14,15 @@ export abstract class ImgSrcRenderer extends Renderer {
             const img = new Image();
             img.src = imgSrc;
             img.onload = () => {
-                resolve(null)
-            }
+                resolve(null);
+            };
             img.onerror = (err) => {
-                resolve(err)
-            }
+                resolve(err);
+            };
         });
 
         return err != null ? `Rendering Error - Invalid img src ${imgSrc.substring(0, 32)} ...` :
-            `<img style="box-shadow: none" src="${imgSrc}" alt="${this.type} diagram"/>`
+            `<img style="box-shadow: none" src="${imgSrc}" alt="${this.type} diagram"/>`;
     }
 
     abstract createImgSrc(code: string): Promise<string>

@@ -14,7 +14,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "parcel build --no-source-maps src/index.html --public-url ./",
-    "dev": "parcel watch src/index.html --public-url ./"
+    "dev": "parcel watch src/index.html --public-url ./",
+    "lint": "eslint . --ext .ts"
   },
   "keywords": [],
   "author": "npgrosser",
@@ -27,6 +28,10 @@
   },
   "devDependencies": {
     "@types/pako": "^1.0.3",
-    "parcel": "^2.2.0"
+    "@typescript-eslint/eslint-plugin": "^5.13.0",
+    "@typescript-eslint/parser": "^5.13.0",
+    "eslint": "^8.10.0",
+    "parcel": "^2.2.0",
+    "typescript": "^4.6.2"
   }
 }

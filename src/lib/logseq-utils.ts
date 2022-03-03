@@ -11,9 +11,9 @@ function getFirstCodeBlockContent(content: string): CodeBlockContent | null {
     const lines = content.trim().split("\n");
 
     let start: number | null = null;
-    let end: number | null = null
+    let end: number | null = null;
     for (let i = 0; i < lines.length; i++) {
-        const line = lines[i]
+        const line = lines[i];
         if (line.trim().startsWith("```")) {
             if (start === null) {
                 start = i + 1;
@@ -26,10 +26,10 @@ function getFirstCodeBlockContent(content: string): CodeBlockContent | null {
     if (end === null) {
         return null;
     } else {
-        const before = lines.slice(0, start - 1).join("\n")
+        const before = lines.slice(0, start - 1).join("\n");
         const code = lines.slice(start, end).join("\n");
-        const after = lines.slice(end + 1).join("\n")
-        return {before, code, after}
+        const after = lines.slice(end + 1).join("\n");
+        return {before, code, after};
     }
 }
 
@@ -38,18 +38,18 @@ export async function findCodeBlock(rendererBlockIdentity: BlockIdentity): Promi
     let codeBlockContent = getFirstCodeBlockContent(block.content);
     if (codeBlockContent === null) {
         if (block.children.length == 0) {
-            return null
+            return null;
         } else {
-            block = (block.children[0] as BlockEntity)
+            block = (block.children[0] as BlockEntity);
             codeBlockContent = getFirstCodeBlockContent(block.content);
         }
     }
-    return [block.uuid, codeBlockContent]
+    return [block.uuid, codeBlockContent];
 }
 
 
 export async function findCode(rendererBlockIdentity: BlockIdentity): Promise<string> {
-    const [, codeBlockContent] = await findCodeBlock(rendererBlockIdentity)
+    const [, codeBlockContent] = await findCodeBlock(rendererBlockIdentity);
     return codeBlockContent.code;
 }
 

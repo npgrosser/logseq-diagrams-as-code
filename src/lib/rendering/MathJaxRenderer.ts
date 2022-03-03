@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import {SvgRenderer} from "./SvgRenderer";
 import {scaleSvgElement} from "./html-utils";
 // @ts-ignore
-import AsciiMathParser from 'asciimath2tex';
+import AsciiMathParser from "asciimath2tex";
 
 const asciiMathParser = new AsciiMathParser();
 
@@ -9,7 +11,7 @@ type MathJaxRendererType = "mml" | "tex" | "asciimath";
 
 export class MathJaxRenderer extends SvgRenderer {
     protected static readonly defaultScale = 1.2;
-    readonly type: MathJaxRendererType
+    readonly type: MathJaxRendererType;
     readonly scale: number;
 
     constructor(type: MathJaxRendererType, scale: number = MathJaxRenderer.defaultScale) {
@@ -20,8 +22,8 @@ export class MathJaxRenderer extends SvgRenderer {
 
     async createSvg(code: string): Promise<string> {
         // @ts-ignore
-        const MathJax = window["MathJax"] as any
-        await MathJax.startup.promise
+        const MathJax = window["MathJax"] as any;
+        await MathJax.startup.promise;
 
         let htmlElement: HTMLElement;
         switch (this.type) {
@@ -32,13 +34,12 @@ export class MathJaxRenderer extends SvgRenderer {
                 htmlElement = MathJax.tex2svg(code);
                 break;
             case "asciimath":
-                const tex = asciiMathParser.parse(code);
-                htmlElement = MathJax.tex2svg(tex);
+                htmlElement = MathJax.tex2svg(asciiMathParser.parse(code));
                 break;
             default:
-                throw Error(`unsupported type '${this.type}'`)
+                throw Error(`unsupported type '${this.type}'`);
         }
-        const svgElement = htmlElement.getElementsByTagName("svg")[0]
+        const svgElement = htmlElement.getElementsByTagName("svg")[0];
 
         scaleSvgElement(svgElement, this.scale);
 

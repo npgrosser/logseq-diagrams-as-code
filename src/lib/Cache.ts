@@ -1,45 +1,33 @@
 import {Mutex} from "async-mutex";
 
 export class Cache<T> {
-    private data: { [key: string]: T } = {}
+    readonly maxSize: number;
     private deleteQueue: string[] = [];
-    private mutex: Mutex = new Mutex()
-    readonly maxSize: number
+    private data: { [key: string]: T } = {};
+    private mutex: Mutex = new Mutex();
 
     constructor(maxSize: number) {
         if (maxSize <= 0) {
-            throw Error("why u do dis?")
+            throw Error("why u do dis?");
         }
         this.maxSize = maxSize;
     }
 
-    private remove(key: string) {
-        const index = this.deleteQueue.indexOf(key);
-        if (index >= 0) {
-            this.deleteQueue.splice(index, 1);
-        }
-        delete this.data[key]
+    get size(): number {
+        return Object.keys(this.data).length;
     }
 
     set(key: string, value: T) {
-        if (this.data.hasOwnProperty(key)) {
+        if (Object.prototype.hasOwnProperty.call(this.data, key)) {
             this.remove(key);
         } else {
             if (this.size >= this.maxSize) {
-                const toRemove = this.deleteQueue[0]
+                const toRemove = this.deleteQueue[0];
                 this.remove(toRemove);
             }
         }
         this.data[key] = value;
         this.deleteQueue.push(key);
-    }
-
-    get size(): number {
-        return Object.keys(this.data).length
-    }
-
-    get(key: string): T | undefined {
-        return this.data[key];
     }
 
     async getOrSupply(key: string, valueSupplier: () => Promise<T>): Promise<T> {
@@ -52,6 +40,18 @@ export class Cache<T> {
                 this.set(key, value);
                 return value;
             }
-        })
+        });
+    }
+
+    get(key: string): T | undefined {
+        return this.data[key];
+    }
+
+    private remove(key: string) {
+        const index = this.deleteQueue.indexOf(key);
+        if (index >= 0) {
+            this.deleteQueue.splice(index, 1);
+        }
+        delete this.data[key];
     }
 }

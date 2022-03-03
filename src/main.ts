@@ -1,4 +1,4 @@
-import '@logseq/libs';
+import "@logseq/libs";
 import {Renderer} from "./lib/rendering/Renderer";
 import {BlockUUID} from "@logseq/libs/dist/LSPlugin";
 import {Config} from "./config";
@@ -23,7 +23,7 @@ interface DiagramOptions {
     containerStyle?: string;
     contentStyle?: string
 
-    [key: string]: any
+    [key: string]: string | number | boolean
 }
 
 function processOptions(diagramOptions: DiagramOptions): Required<DiagramOptions> {
@@ -36,11 +36,11 @@ function processOptions(diagramOptions: DiagramOptions): Required<DiagramOptions
         captionStyle: diagramOptions.captionStyle || "",
         contentStyle: diagramOptions.contentStyle || "",
         containerStyle: diagramOptions.containerStyle || ""
-    }
+    };
 }
 
 function main() {
-    for (let renderer of renderers) {
+    for (const renderer of renderers) {
         let loaders = templates.filter(t => t.rendererType === renderer.type);
         if (loaders.length == 0) {
             // fallback loader with empty template
@@ -49,18 +49,18 @@ function main() {
             ];
         }
 
-        for (let loader of loaders) {
+        for (const loader of loaders) {
             logseq.Editor.registerSlashCommand(`Create ${loader.templateName}`,
                 async () => createDiagramAsCodeBlock(renderer.type, await loader.load()));
 
             logseq.App.onMacroRendererSlotted(async ({slot, payload}) => {
-                let [rendererName, type, optionsStr] = payload.arguments;
+                const [rendererName, type, optionsStr] = payload.arguments;
                 const options: DiagramOptions = {};
                 if (optionsStr) {
-                    for (let optionStr of optionsStr.split("&")) {
-                        const [key, value] = optionStr.split("=").map(s => s.trim())
+                    for (const optionStr of optionsStr.split("&")) {
+                        const [key, value] = optionStr.split("=").map(s => s.trim());
                         if (key) {
-                            options[key] = value
+                            options[key] = value;
                         }
                     }
                 }
@@ -129,7 +129,7 @@ async function handleDiagramClick() {
     //  should be improved (or code update should be recognized while user is editing)
     const editing = await logseq.Editor.checkEditing();
     if (typeof editing === "string") {
-        let block = await logseq.Editor.getBlock(editing)
+        let block = await logseq.Editor.getBlock(editing);
 
         if (!isRendererBlock(block)) {
             // parent

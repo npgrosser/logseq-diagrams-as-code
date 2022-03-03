@@ -6,9 +6,9 @@ import {createErrorSpan, svgToImg} from "./html-utils";
 
 export class KrokiRenderer extends ImgSrcRenderer {
     readonly type: string;
-    readonly fmt: string
+    readonly fmt: string;
 
-    constructor(type: string, fmt: string = "svg") {
+    constructor(type: string, fmt = "svg") {
         super();
         this.type = type;
         this.fmt = fmt;
@@ -16,11 +16,11 @@ export class KrokiRenderer extends ImgSrcRenderer {
 
     async render(code: string): Promise<string> {
         if (code.trim().length == 0) {
-            return ""
+            return "";
         }
         if (this.fmt === "svg") {
             const response = await fetch(await this.createImgSrc(code));
-            const text = await response.text()
+            const text = await response.text();
             if (response.status === 200) {
                 return svgToImg(text, `A ${this.type} Diagram`);
             } else {
@@ -41,6 +41,6 @@ export class KrokiRenderer extends ImgSrcRenderer {
     async createImgSrc(code: string): Promise<string> {
         const compressed = pako.deflate(code, {level: 9});
         const b64encoded = urlSafeBase64(String.fromCharCode.apply(null, Array.from(compressed)));
-        return new URL(`${this.type}/${this.fmt}/${b64encoded}`, Config.krokiBaseUrl).href
+        return new URL(`${this.type}/${this.fmt}/${b64encoded}`, Config.krokiBaseUrl).href;
     }
 }

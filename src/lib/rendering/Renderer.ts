@@ -12,7 +12,7 @@ export abstract class Renderer {
 
 class CachedRenderer extends Renderer {
     private actual: Renderer;
-    private cache: Cache<string>
+    private cache: Cache<string>;
 
     constructor(actual: Renderer) {
         super();

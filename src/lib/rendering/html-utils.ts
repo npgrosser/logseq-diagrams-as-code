@@ -12,17 +12,17 @@ export function scaleSvgElement(svgElement: SVGSVGElement, scale: number) {
     }
 
     svgElement.setAttribute("width",
-        scaleSizeString(svgElement.getAttribute("width"), scale))
+        scaleSizeString(svgElement.getAttribute("width"), scale));
     svgElement.setAttribute("height",
-        scaleSizeString(svgElement.getAttribute("height"), scale))
+        scaleSizeString(svgElement.getAttribute("height"), scale));
 }
 
 export function svgToImg(svg: string, alt: string): string {
-    return `<img style="box-shadow: none" alt="${alt}" src="data:image/svg+xml;utf8,${encodeURIComponent(svg)}">`
+    return `<img style="box-shadow: none" alt="${alt}" src="data:image/svg+xml;utf8,${encodeURIComponent(svg)}">`;
 }
 
 export function createErrorSpan(text: string): string {
-    return `<span style="white-space: pre-line;" class="error">${htmlEscape(text)}</span>`
+    return `<span style="white-space: pre-line;" class="error">${htmlEscape(text)}</span>`;
 }
 
 export function htmlEscape(text: string) {

@@ -152,7 +152,7 @@ const templates: Template[] = [
           db02;
       }
     }`)),
-]
+];
 
 
-export default templates
+export default templates;

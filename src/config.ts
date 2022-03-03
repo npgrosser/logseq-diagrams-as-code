@@ -1,5 +1,6 @@
-const KROKI_BASE_URL_KEY = "kroki.baseUrl"
-const INLINE_CODE_BLOCK_KEY = "inlineCodeBlock"
+/* eslint-disable @typescript-eslint/no-explicit-any */
+const KROKI_BASE_URL_KEY = "kroki.baseUrl";
+const INLINE_CODE_BLOCK_KEY = "inlineCodeBlock";
 
 export class Config {
     private static select(key: string): any | undefined {
@@ -10,9 +11,9 @@ export class Config {
         if (obj === undefined) {
             return undefined;
         }
-        const keys = key.split(".")
+        const keys = key.split(".");
         if (keys.length > 1) {
-            return this.selectFrom(obj[keys.shift()], keys.join("."))
+            return this.selectFrom(obj[keys.shift()], keys.join("."));
         } else {
             return obj[key];
         }
