@@ -1,7 +1,7 @@
 # Logseq - Diagrams as Code
 
 Plugin that lets you create diagrams (and other visualizations) from textual representation (aka 'Diagrams as Code')
-within Logseq
+within Logseq.
 
 ![Demo](demo.gif)
 
@@ -55,7 +55,7 @@ To do that, you have to specify *diagram options*.
 
 Diagram options are provided as a *renderer argument*, where each option is a key-value pair with key and value
 separated by '='.    
-Multiple options are separated by '&'. (for example: `title=My Title&caption=My Caption`)
+Multiple options are separated by '&' (e.g. `title=My Title&caption=My Caption`).
 
 **Example**
 
@@ -126,5 +126,5 @@ _See pseudo html structure above_
 
 #### Diagram-type specific styling
 
-For global but diagram-type specific styling, just append `-$diagramType` to the css class name.     
+For global but diagram-type specific styling, just append `-$diagramType` to the CSS class name.     
 E.g. `dac-container-plantuml` for PlantUML diagrams.
