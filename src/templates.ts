@@ -152,6 +152,8 @@ const templates: Template[] = [
           db02;
       }
     }`)),
+    new InMemoryTemplate("asciimath", "AsciiMath Formula", "E=mc^2"),
+    new InMemoryTemplate("tex", "TeX Formula", "E=mc^2")
 ];
 
 
