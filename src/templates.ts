@@ -65,6 +65,14 @@ const templates: Template[] = [
         Bob -> Alice : Authentication Request
         Bob <- Alice : Authentication Response
         @enduml`)),
+    new InMemoryTemplate("plantuml", "PlantUML Activity Diagram (new)", dedent(`
+        @startuml
+        start
+        :Hello world;
+        :This is defined on
+        several **lines**;
+        stop
+        @enduml`)),
     new InMemoryTemplate("plantuml", "PlantUML C4 Container Diagram", dedent(`
         @startuml
         !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
@@ -158,3 +166,4 @@ const templates: Template[] = [
 
 
 export default templates;
+
