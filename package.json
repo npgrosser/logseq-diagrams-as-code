@@ -21,7 +21,7 @@
   "author": "npgrosser",
   "license": "MIT",
   "dependencies": {
-    "@logseq/libs": "^0.0.1-alpha.35",
+    "@logseq/libs": "^0.0.3",
     "asciimath2tex": "^1.3.0",
     "async-mutex": "^0.3.2",
     "pako": "^2.0.4"
