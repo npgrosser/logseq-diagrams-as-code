@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const KROKI_BASE_URL_KEY = "kroki.baseUrl";
 const INLINE_CODE_BLOCK_KEY = "inlineCodeBlock";
+const COMMANDS_RENDERERS = "commands.renderers";
 
 export class Config {
     private static select(key: string): any | undefined {
@@ -26,5 +27,9 @@ export class Config {
     static get inlineCodeBlock(): boolean {
         const value = this.select(INLINE_CODE_BLOCK_KEY);
         return value === true || value == "true";
+    }
+
+    static get commandsRenderers(): string[] | undefined {
+        return this.select(COMMANDS_RENDERERS);
     }
 }

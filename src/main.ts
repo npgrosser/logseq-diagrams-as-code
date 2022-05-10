@@ -50,8 +50,14 @@ function main() {
         }
 
         for (const loader of loaders) {
-            logseq.Editor.registerSlashCommand(`Create ${loader.templateName}`,
-                async () => createDiagramAsCodeBlock(renderer.type, await loader.load()));
+
+            const registerSlashCommand = !Config.commandsRenderers ||
+                Config.commandsRenderers.indexOf(renderer.type) >= 0;
+
+            if (registerSlashCommand) {
+                logseq.Editor.registerSlashCommand(`Create ${loader.templateName}`,
+                    async () => createDiagramAsCodeBlock(renderer.type, await loader.load()));
+            }
 
             logseq.App.onMacroRendererSlotted(async ({slot, payload}) => {
                 const [rendererName, type, optionsStr] = payload.arguments;
