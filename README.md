@@ -44,6 +44,22 @@ You can change the kroki URL in your plugin config accordingly:
         }
     }
 
+## Configure Slash-Commands
+
+### Disable unused commands
+
+The plugin offers a lot of different diagram types.     
+Since one usually uses only a small part of them,
+you can explicitly select the renderers that are relevant for you to avoid the large amount of unnecessary commands.
+
+E.g. to enable commands for PlantUml and Mermaid diagrams only:
+
+    {
+        "commands": {
+            "renderers": ["plantuml", "mermaid"]
+        }
+    }
+
 ## Decorating Diagrams
 
 There are some options to decorate your diagrams.
