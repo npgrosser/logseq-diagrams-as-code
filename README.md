@@ -10,14 +10,20 @@ within Logseq.
 ### Diagrams
 
 - [PlantUML](https://plantuml.com/)
-- [Graphviz](https://graphviz.org/)
-- [Mermaid](https://mermaid-js.github.io/mermaid/#/)
-- [Nomnoml](https://www.nomnoml.com/)
-- [Erd](https://hackage.haskell.org/package/erd)
+- [BPMN](https://en.wikipedia.org/wiki/Business_Process_Model_and_Notation)
+- [Bytefield](https://texdoc.org/serve/bytefield.pdf/0)
 - [BlockDiag](http://blockdiag.com/en/blockdiag/index.html)
 - [SeqDiag](http://blockdiag.com/en/seqdiag/index.html)
 - [ActDiag](http://blockdiag.com/en/actdiag/index.html)
 - [NwDiag](http://blockdiag.com/en/nwdiag/index.html)
+- [Ditaa](http://ditaa.sourceforge.net/)
+- [Graphviz](https://graphviz.org/)
+- [Mermaid](https://mermaid-js.github.io/mermaid/#/)
+- [Nomnoml](https://www.nomnoml.com/)
+- [Erd](https://hackage.haskell.org/package/erd)
+- [Pikchr](https://pikchr.org/)
+- [Structurizr](https://structurizr.com/)
+- [Vega](https://vega.github.io/)
 - [WaveDrom](https://wavedrom.com/)
 
 ### Math
