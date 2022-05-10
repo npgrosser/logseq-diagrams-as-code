@@ -4,14 +4,25 @@ import {MathJaxRenderer} from "./lib/rendering/MathJaxRenderer";
 
 const krokiRenderers = [
     "plantuml",
-    "mermaid",
-    "blockdiag",
+    "bpmn",
+    "bytefield",
+    "packetdiag",
     "seqdiag",
+    "rackdiag",
+    "blockdiag",
     "actdiag",
+    "nwdiag",
+    "pikchr",
+    "structurizr",
+    "excalidraw",
+    "svgbob",
+    "vega",
+    "vegalite",
+    "ditaa",
+    "mermaid",
     "erd",
     "nomnoml",
     "graphviz",
-    "nwdiag",
     "wavedrom"
 ].map(type => new KrokiRenderer(type));
 
