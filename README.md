@@ -1,8 +1,7 @@
 # Logseq - Diagrams as Code
 
 [Logseq](https://github.com/logseq/logseq) plugin that lets you create diagrams (and other visualizations) from textual
-representation (aka 'Diagrams as Code')
-within Logseq.
+representation (aka 'Diagrams as Code').
 
 ![Demo](demo.gif)
 
@@ -39,8 +38,7 @@ Another great option for writing math is [darwis-mathlive-plugin](https://github
 
 ### Kroki
 
-For diagram types that can not be rendered locally, the plugin uses the awesome [kroki.io](https://kroki.io/)
-service.
+Most diagram types are rendered using the awesome [kroki.io](https://kroki.io/) API.
 
 If you don't want to send your diagrams to a third party, there is the possibility
 to [host it in your own infrastructure](https://docs.kroki.io/kroki/setup/install/).
