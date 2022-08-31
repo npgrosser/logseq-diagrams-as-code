@@ -1,28 +1,29 @@
-import {KrokiRenderer} from "./lib/rendering/KrokiRenderer";
-import {Renderer} from "./lib/rendering/Renderer";
-import {MathJaxRenderer} from "./lib/rendering/MathJaxRenderer";
+import { KrokiRenderer } from './lib/rendering/KrokiRenderer';
+import { MathJaxRenderer } from './lib/rendering/MathJaxRenderer';
+import { Renderer } from './lib/rendering/Renderer';
 
 const krokiRenderers = [
-    "plantuml",
+    "actdiag",
+    "blockdiag",
     "bpmn",
     "bytefield",
-    "packetdiag",
-    "seqdiag",
-    "rackdiag",
-    "blockdiag",
-    "actdiag",
-    "nwdiag",
-    "pikchr",
-    "structurizr",
+    "ditaa",
+    "erd",
     "excalidraw",
+    "graphviz",
+    "mermaid",
+    "nomnoml",
+    "nwdiag",
+    "packetdiag",
+    "pikchr",
+    "plantuml",
+    "rackdiag",
+    "seqdiag",
+    "structurizr",
+    "umlet",
     "svgbob",
     "vega",
     "vegalite",
-    "ditaa",
-    "mermaid",
-    "erd",
-    "nomnoml",
-    "graphviz",
     "wavedrom"
 ].map(type => new KrokiRenderer(type));
 
