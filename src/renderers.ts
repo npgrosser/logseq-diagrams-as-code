@@ -1,6 +1,6 @@
-import { KrokiRenderer } from './lib/rendering/KrokiRenderer';
-import { MathJaxRenderer } from './lib/rendering/MathJaxRenderer';
-import { Renderer } from './lib/rendering/Renderer';
+import {KrokiRenderer} from "./lib/rendering/KrokiRenderer";
+import {MathJaxRenderer} from "./lib/rendering/MathJaxRenderer";
+import {Renderer} from "./lib/rendering/Renderer";
 
 const krokiRenderers = [
     "actdiag",

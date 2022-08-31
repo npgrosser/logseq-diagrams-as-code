@@ -1,10 +1,10 @@
-import { dedent } from './lib/string-utils';
+import {dedent} from "./lib/string-utils";
 
 export interface Template {
-    readonly rendererType: string
-    readonly templateName: string
+    readonly rendererType: string;
+    readonly templateName: string;
 
-    load(): Promise<string>
+    load(): Promise<string>;
 }
 
 export class InMemoryTemplate implements Template {
@@ -1691,8 +1691,42 @@ const templates: Template[] = [
   }
 }`)),
     new InMemoryTemplate("umlet", "UMLet Diagram", dedent(`
-    <diagram program="umletino" version="15.0.0"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>90</x><y>80</y><w>100</w><h>30</h></coordinates><panel_attributes>Class A</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>90</x><y>160</y><w>100</w><h>30</h></coordinates><panel_attributes>Class B</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>130</x><y>100</y><w>30</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;60</additional_attributes></element></diagram>
-`))
+    <diagram program="umletino" version="15.0.0">
+        <zoom_level>10</zoom_level>
+        <element>
+            <id>UMLClass</id>
+            <coordinates>
+                <x>90</x>
+                <y>80</y>
+                <w>100</w>
+                <h>30</h>
+            </coordinates>
+            <panel_attributes>Class A</panel_attributes>
+            <additional_attributes></additional_attributes>
+        </element>
+        <element>
+            <id>UMLClass</id>
+            <coordinates>
+                <x>90</x>
+                <y>160</y>
+                <w>100</w>
+                <h>30</h>
+            </coordinates>
+            <panel_attributes>Class B</panel_attributes>
+            <additional_attributes></additional_attributes>
+        </element>
+        <element>
+            <id>Relation</id>
+            <coordinates>
+                <x>130</x>
+                <y>100</y>
+                <w>30</w>
+                <h>80</h>
+            </coordinates>
+            <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+            <additional_attributes>10;10;10;60</additional_attributes>
+        </element>
+    </diagram>`))
 ];
 
 
