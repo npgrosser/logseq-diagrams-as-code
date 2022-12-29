@@ -2,7 +2,7 @@
   "logseq": {
     "id": "logseq-diagrams-as-code",
     "title": "Diagrams as Code",
-    "icon": "./icon.svg"
+    "icon": "./icon.png"
   },
   "name": "logseq-diagrams-as-code",
   "version": "0.0.16",
