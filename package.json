@@ -5,7 +5,7 @@
     "icon": "./icon.png"
   },
   "name": "logseq-diagrams-as-code",
-  "version": "0.0.16",
+  "version": "0.0.17",
   "description": "",
   "main": "dist/index.html",
   "targets": {
