@@ -10,9 +10,9 @@ export abstract class Renderer {
     }
 }
 
-class CachedRenderer extends Renderer {
-    private actual: Renderer;
-    private cache: Cache<string>;
+export class CachedRenderer extends Renderer {
+    private readonly actual: Renderer;
+    private readonly cache: Cache<string>;
 
     constructor(actual: Renderer) {
         super();
@@ -26,6 +26,10 @@ class CachedRenderer extends Renderer {
 
     cached(): CachedRenderer {
         return this;
+    }
+
+    get original(): Renderer {
+        return this.actual;
     }
 
     render(code: string): Promise<string> {

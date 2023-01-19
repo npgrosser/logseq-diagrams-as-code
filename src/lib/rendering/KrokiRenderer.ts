@@ -7,11 +7,17 @@ import {createErrorSpan, svgToImg} from "./html-utils";
 export class KrokiRenderer extends ImgSrcRenderer {
     readonly type: string;
     readonly fmt: string;
+    readonly diagramOptions: { [key: string]: string };
 
-    constructor(type: string, fmt = "svg") {
+    constructor(type: string, fmt = "svg", diagramOptions: { [key: string]: string } = {}) {
         super();
         this.type = type;
         this.fmt = fmt;
+        this.diagramOptions = diagramOptions;
+    }
+
+    withDiagramOptions(diagramOptions: { [key: string]: string }): KrokiRenderer {
+        return new KrokiRenderer(this.type, this.fmt, diagramOptions);
     }
 
     async render(code: string): Promise<string> {
@@ -41,6 +47,11 @@ export class KrokiRenderer extends ImgSrcRenderer {
     async createImgSrc(code: string): Promise<string> {
         const compressed = pako.deflate(code, {level: 9});
         const b64encoded = urlSafeBase64(String.fromCharCode.apply(null, Array.from(compressed)));
-        return new URL(`${this.type}/${this.fmt}/${b64encoded}`, Config.krokiBaseUrl).href;
+
+        const diagramOptions = Object.entries(this.diagramOptions).map(([key, value]) => `${key}=${value}`).join("&");
+
+        const query = diagramOptions.length > 0 ? `?${diagramOptions}` : "";
+
+        return new URL(`${this.type}/${this.fmt}/${b64encoded}`, Config.krokiBaseUrl).href + query;
     }
 }

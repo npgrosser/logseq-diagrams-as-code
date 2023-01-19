@@ -29,6 +29,10 @@ export class Config {
         return value === true || value == "true";
     }
 
+    /**
+     * explicit list of renderers for which commands should be registered
+     * if undefined, all renderers will be registered
+     */
     static get commandsRenderers(): string[] | undefined {
         return this.select(COMMANDS_RENDERERS);
     }

@@ -1,10 +1,11 @@
 import "@logseq/libs";
-import {Renderer} from "./lib/rendering/Renderer";
+import {CachedRenderer, Renderer} from "./lib/rendering/Renderer";
 import {BlockUUID} from "@logseq/libs/dist/LSPlugin";
 import {Config} from "./config";
 import {findCode, isRendererBlock} from "./lib/logseq-utils";
 import renderers from "./renderers";
 import templates, {InMemoryTemplate} from "./templates";
+import {KrokiRenderer} from "./lib/rendering/KrokiRenderer";
 
 const RENDERER_NAME = "code_diagram";
 const CONTAINER_ID_PREFIX = "dac-container-";
@@ -14,19 +15,22 @@ const CAPTION_CSS_CLASS = "dac-caption";
 const CONTENT_CSS_CLASS = "dac-content";
 
 interface DiagramOptions {
-    title?: string
-    titleStyle?: string
-    titleTag?: string
-    caption?: string
-    captionStyle?: string
-    captionTag?: string
+    title?: string;
+    titleStyle?: string;
+    titleTag?: string;
+    caption?: string;
+    captionStyle?: string;
+    captionTag?: string;
     containerStyle?: string;
-    contentStyle?: string
+    contentStyle?: string;
 
-    [key: string]: string | number | boolean
+    [key: string]: string | number | boolean | SimpleObject;
 }
 
-function processOptions(diagramOptions: DiagramOptions): Required<DiagramOptions> {
+type SimpleObject = { [key: string]: string | number | boolean | SimpleObject };
+
+
+function orDefaults(diagramOptions: DiagramOptions): Required<DiagramOptions> {
     return {
         title: diagramOptions.title || "",
         titleTag: diagramOptions.titleTag || "h4",
@@ -39,42 +43,81 @@ function processOptions(diagramOptions: DiagramOptions): Required<DiagramOptions
     };
 }
 
+/**
+ * parses options in the format: key1=value1&key2=value2&key3=value3&...
+ * @param optionsStr
+ */
+function parseDiagramOptions(optionsStr: string) {
+    const options: DiagramOptions = {};
+    if (optionsStr) {
+        for (const optionStr of optionsStr.split("&")) {
+            const [key, value] = optionStr.split("=").map(s => s.trim());
+
+            const keyParts = key.split(".");
+            if (keyParts.length == 1) {
+                options[key] = value;
+            } else {
+                let current = options as SimpleObject;
+                for (let i = 0; i < keyParts.length; i++) {
+                    const keyPart = keyParts[i];
+                    if (i == keyParts.length - 1) {
+                        current[keyPart] = value;
+                    } else {
+                        if (!current[keyPart]) {
+                            current[keyPart] = {};
+                        }
+                        const next = current[keyPart];
+                        current = next as SimpleObject;
+                    }
+                }
+            }
+        }
+    }
+
+    return options;
+}
+
 function main() {
     for (const renderer of renderers) {
-        let loaders = templates.filter(t => t.rendererType === renderer.type);
-        if (loaders.length == 0) {
-            // fallback loader with empty template
-            loaders = [
+        // find all templates for the renderer
+        // for each template, a slash command is registered
+
+        let relevantTemplates = templates.filter(t => t.rendererType === renderer.type);
+        if (relevantTemplates.length == 0) {
+            // fallback: empty template
+            relevantTemplates = [
                 new InMemoryTemplate(renderer.type, `${renderer.type} (empty)`, "")
             ];
         }
 
-        for (const loader of loaders) {
+        for (const template of relevantTemplates) {
 
             const registerSlashCommand = !Config.commandsRenderers ||
                 Config.commandsRenderers.indexOf(renderer.type) >= 0;
 
             if (registerSlashCommand) {
-                logseq.Editor.registerSlashCommand(`Create ${loader.templateName}`,
-                    async () => createDiagramAsCodeBlock(renderer.type, await loader.load()));
+                // slash command to create new diagram rendering block
+                logseq.Editor.registerSlashCommand(`Create ${template.templateName}`,
+                    async () => createDiagramAsCodeBlock(renderer.type, await template.load()));
             }
-
-            logseq.App.onMacroRendererSlotted(async ({slot, payload}) => {
-                const [rendererName, type, optionsStr] = payload.arguments;
-                const options: DiagramOptions = {};
-                if (optionsStr) {
-                    for (const optionStr of optionsStr.split("&")) {
-                        const [key, value] = optionStr.split("=").map(s => s.trim());
-                        if (key) {
-                            options[key] = value;
-                        }
-                    }
-                }
-                if (rendererName !== RENDERER_NAME || type !== renderer.type) return;
-                await updateDiagram(slot, payload.uuid, renderer, options);
-            });
         }
     }
+
+    logseq.App.onMacroRendererSlotted(async ({slot, payload}) => {
+        const [rendererName, type, optionsStr] = payload.arguments;
+
+        if (rendererName !== RENDERER_NAME) return;
+
+        const renderer = renderers.find(r => r.type === type);
+        if (!renderer) {
+            console.error(`Renderer not found: ${type}`);
+            return;
+        }
+
+        const options: DiagramOptions = parseDiagramOptions(optionsStr);
+        await updateDiagram(slot, payload.uuid, renderer, options);
+    });
+
 
     logseq.provideModel({handleDiagramClick});
 }
@@ -82,10 +125,7 @@ function main() {
 logseq.ready(main).catch(console.error);
 
 async function updateDiagram(slot: string, rendererBlockIdentity: BlockUUID, renderer: Renderer, opts: DiagramOptions) {
-    const code = await findCode(rendererBlockIdentity);
-    const diagramHtml = await renderer.render(code);
 
-    const id = `${CONTAINER_ID_PREFIX}${rendererBlockIdentity}`;
 
     const {
         caption,
@@ -96,7 +136,28 @@ async function updateDiagram(slot: string, rendererBlockIdentity: BlockUUID, ren
         title,
         titleStyle,
         titleTag
-    } = processOptions(opts);
+    } = orDefaults(opts);
+
+
+    // special case (experimental): kroki diagram options
+
+    console.log("OOOOOPPPTS", opts);
+
+    if (opts.kroki && typeof opts.kroki === "object" && opts.kroki.diagram) {
+        if (renderer instanceof CachedRenderer) {
+            renderer = renderer.original;
+        }
+        if (renderer instanceof KrokiRenderer) {
+            // todo: breaks caching (maybe overwork caching
+            //       e.g. create new kroki client class with cache, that is shared between all kroki renderers)
+            renderer = renderer.withDiagramOptions(opts.kroki.diagram as { [key: string]: string });
+        }
+    }
+
+    const code = await findCode(rendererBlockIdentity);
+    const diagramHtml = await renderer.render(code);
+
+    const id = `${CONTAINER_ID_PREFIX}${rendererBlockIdentity}`;
 
     const titleElement = title ? `
         <${titleTag} class="${TITLE_CSS_CLASS} ${TITLE_CSS_CLASS}-${renderer.type}" style="${titleStyle}">
