@@ -24,7 +24,8 @@ const krokiRenderers = [
     "svgbob",
     "vega",
     "vegalite",
-    "wavedrom"
+    "wavedrom",
+    "d2"
 ].map(type => new KrokiRenderer(type));
 
 export const renderers: readonly Renderer[] = [

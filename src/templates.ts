@@ -99,6 +99,8 @@ const templates: Template[] = [
         *** Identify Quick Wins
         ** Complete innovate phase
         @endwbs`)),
+    new InMemoryTemplate("d2", "D2 Diagram", dedent(`
+        x -> y: hello world`)),
     new InMemoryTemplate("blockdiag", "BlockDiag Diagram", dedent(`
         blockdiag {
           blockdiag -> generates -> "Block diagrams";
