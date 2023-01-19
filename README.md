@@ -25,6 +25,7 @@ representation (aka 'Diagrams as Code').
 - [Structurizr](https://structurizr.com/)
 - [Vega](https://vega.github.io/)
 - [WaveDrom](https://wavedrom.com/)
+- [D2](https://d2lang.com/)
 
 ### Math
 
