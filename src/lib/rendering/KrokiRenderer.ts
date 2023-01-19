@@ -25,7 +25,21 @@ export class KrokiRenderer extends ImgSrcRenderer {
             return "";
         }
         if (this.fmt === "svg") {
-            const response = await fetch(await this.createImgSrc(code));
+            let response;
+            try {
+                response = await fetch(await this.createImgSrc(code));
+            } catch (error) {
+
+                const err = error as Error;
+
+                if (err.name === "TypeError" && err.message === "Failed to fetch") {
+                    console.log("CORS error - falling back to default ImgSrcRenderer:", error);
+                    return await super.render(code);
+                } else {
+                    throw error;
+                }
+            }
+
             const text = await response.text();
             if (response.status === 200) {
                 return svgToImg(text, `A ${this.type} Diagram`);
@@ -39,9 +53,10 @@ export class KrokiRenderer extends ImgSrcRenderer {
                 }
                 return createErrorSpan(lines.join("\n"));
             }
-        } else {
-            return await super.render(code);
         }
+
+
+        return await super.render(code);
     }
 
     async createImgSrc(code: string): Promise<string> {

@@ -140,9 +140,6 @@ async function updateDiagram(slot: string, rendererBlockIdentity: BlockUUID, ren
 
 
     // special case (experimental): kroki diagram options
-
-    console.log("OOOOOPPPTS", opts);
-
     if (opts.kroki && typeof opts.kroki === "object" && opts.kroki.diagram) {
         if (renderer instanceof CachedRenderer) {
             renderer = renderer.original;
