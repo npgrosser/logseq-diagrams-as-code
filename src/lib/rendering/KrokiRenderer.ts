@@ -33,7 +33,8 @@ export class KrokiRenderer extends ImgSrcRenderer {
                 const err = error as Error;
 
                 if (err.name === "TypeError" && err.message === "Failed to fetch") {
-                    console.log("CORS error - falling back to default ImgSrcRenderer:", error);
+                    console.warn(error);
+                    console.warn("Falling back to default ImgSrcRenderer:", error);
                     return await super.render(code);
                 } else {
                     throw error;
