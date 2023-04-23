@@ -101,6 +101,24 @@ const templates: Template[] = [
         @endwbs`)),
     new InMemoryTemplate("d2", "D2 Diagram", dedent(`
         x -> y: hello world`)),
+    new InMemoryTemplate("tikz", "TikZ Diagram", dedent(`
+    \\documentclass[tikz,border=10pt]{standalone}
+    \\usetikzlibrary{graphdrawing}
+    \\usetikzlibrary{graphs}
+    \\usegdlibrary{trees}
+    \\begin{document}
+    \\begin{tikzpicture}[>=stealth, every node/.style={circle, draw, minimum size=0.75cm}]
+    \\graph [tree layout, grow=down, fresh nodes, level distance=0.5in, sibling distance=0.5in]
+        {
+            4 -> { 
+              3 -> { 1 -> { 5, " " }, 2,2 },
+              3 -> { 1, 2, 2 },
+              3 -> { 1, 2, 2 }
+            } 
+        };
+    \\end{tikzpicture}
+    \\end{document}
+    `)),
     new InMemoryTemplate("blockdiag", "BlockDiag Diagram", dedent(`
         blockdiag {
           blockdiag -> generates -> "Block diagrams";
