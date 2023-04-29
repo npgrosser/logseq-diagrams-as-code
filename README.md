@@ -68,9 +68,9 @@ E.g. to enable commands for PlantUml and Mermaid diagrams only:
         }
     }
 
-## Decorating Diagrams
+## Styling and Decorating Diagrams
 
-There are some options to decorate your diagrams.
+There are some options to style and decorate your diagrams.
 
 ### Adding title and caption
 
@@ -133,6 +133,23 @@ List of all options:
 And this is how it would look if we used all example values:
 
 ![example2](readme-images/example2.png)
+
+_Note: This PlantUML example uses the `skinparam backgroundColor transparent` to make the container and content
+background visible._
+
+#### Diagram scaling
+
+Depending on the diagram type and the diagram content, the diagram may be too small to be readable.
+This is a common use case for using the _containerStyle_ option to explicitly set the width of your diagram.
+
+Example:
+
+```
+{{renderer code_diagram,d2,containerStyle=width: 400px}}
+```
+
+See [#19 (comment)](https://github.com/npgrosser/logseq-diagrams-as-code/issues/19#issuecomment-1519079504) for why this
+is sometimes necessary.
 
 ### Global Styling
 
