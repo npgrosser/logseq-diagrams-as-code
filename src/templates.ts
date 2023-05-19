@@ -122,6 +122,21 @@ const templates: Template[] = [
     \\end{tikzpicture}
     \\end{document}
     `)),
+    new InMemoryTemplate("tikz", "PGF Diagram", dedent(`
+    \\usepackage{pgf}
+    
+    \\begin{document}
+    
+    \\begin{pgfpicture}
+    \\pgfpathrectangle{\\pgfpointorigin}{\\pgfpoint{3cm}{2cm}}
+    \\pgfusepath{stroke}
+    
+    \\pgfpathcircle{\\pgfpoint{1.5cm}{1cm}}{1cm}
+    \\pgfusepath{stroke}
+    \\end{pgfpicture}
+    
+    \\end{document}
+    `)),
     new InMemoryTemplate("blockdiag", "BlockDiag Diagram", dedent(`
         blockdiag {
           blockdiag -> generates -> "Block diagrams";

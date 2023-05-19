@@ -24,8 +24,12 @@ representation (aka 'Diagrams as Code').
 - [Pikchr](https://pikchr.org/)
 - [Structurizr](https://structurizr.com/)
 - [Vega](https://vega.github.io/)
+- [Vega-Lite](https://vega.github.io/vega-lite/)
 - [WaveDrom](https://wavedrom.com/)
 - [D2](https://d2lang.com/)
+- [UMlet](https://www.umlet.com/)
+- [SvgBob](https://ivanceras.github.io/svgbob-editor/)
+- [PGF/TikZ](https://tikz.dev/)
 
 ### Math
 
