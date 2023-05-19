@@ -102,20 +102,23 @@ const templates: Template[] = [
     new InMemoryTemplate("d2", "D2 Diagram", dedent(`
         x -> y: hello world`)),
     new InMemoryTemplate("tikz", "TikZ Diagram", dedent(`
-    \\documentclass[tikz,border=10pt]{standalone}
-    \\usetikzlibrary{graphdrawing}
-    \\usetikzlibrary{graphs}
-    \\usegdlibrary{trees}
+    \\usepackage{tikz}
+    \\usetikzlibrary{positioning}
     \\begin{document}
-    \\begin{tikzpicture}[>=stealth, every node/.style={circle, draw, minimum size=0.75cm}]
-    \\graph [tree layout, grow=down, fresh nodes, level distance=0.5in, sibling distance=0.5in]
-        {
-            4 -> { 
-              3 -> { 1 -> { 5, " " }, 2,2 },
-              3 -> { 1, 2, 2 },
-              3 -> { 1, 2, 2 }
-            } 
-        };
+    \\begin{tikzpicture}[
+    roundnode/.style={circle, draw=green!60, fill=green!5, very thick, minimum size=7mm},
+    squarednode/.style={rectangle, draw=red!60, fill=red!5, very thick, minimum size=5mm},
+    ]
+    %Nodes
+    \\node[squarednode]      (maintopic)                              {2};
+    \\node[roundnode]        (uppercircle)       [above=of maintopic] {1};
+    \\node[squarednode]      (rightsquare)       [right=of maintopic] {3};
+    \\node[roundnode]        (lowercircle)       [below=of maintopic] {4};
+    
+    %Lines
+    \\draw[->] (uppercircle.south) -- (maintopic.north);
+    \\draw[->] (maintopic.east) -- (rightsquare.west);
+    \\draw[->] (rightsquare.south) .. controls +(down:7mm) and +(right:7mm) .. (lowercircle.east);
     \\end{tikzpicture}
     \\end{document}
     `)),
