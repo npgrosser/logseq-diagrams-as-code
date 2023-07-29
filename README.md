@@ -173,3 +173,18 @@ _See pseudo html structure above_
 
 For global but diagram-type specific styling, just append `-$diagramType` to the CSS class name.     
 E.g. `dac-container-plantuml` for PlantUML diagrams.
+
+
+
+### Kroki Diagram Options
+
+For diagrams rendered by the [kroki.io](https://kroki.io/) API, there are some additional options available.
+See [kroki.io docs](https://docs.kroki.io/kroki/setup/diagram-options/) for details.
+You can use them by adding them to the renderer arguments.
+All `kroki.diagram.$option`s are passed to the kroki API.
+
+For example, to enable sketch mode and the aubergine (7) theme for D2 diagrams:
+
+```
+{{renderer code_diagram,d2,kroki.diagram.theme=7&kroki.diagram.sketch=1}}
+```
