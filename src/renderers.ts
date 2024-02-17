@@ -26,7 +26,8 @@ const krokiRenderers = [
     "vegalite",
     "wavedrom",
     "d2",
-    "tikz"
+    "tikz",
+    "wirewiz"
 ].map(type => new KrokiRenderer(type));
 
 export const renderers: readonly Renderer[] = [
